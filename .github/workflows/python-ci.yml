@@ -1,0 +1,30 @@
+name: Python CI Check
+
+# متى يعمل الروبوت؟ عند كل push على فرع main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  test-code:
+    # شغل جهاز لينكس افتراضي مجاني من GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+      # الخطوة 1: اسحب كودك إلى الجهاز الافتراضي
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # الخطوة 2: ثبّت بايثون على الجهاز الافتراضي
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # الخطوة 3: افحص ملف calc1.py وتأكد أنه خالٍ من الأخطاء
+      - name: Test calc1.py syntax and run
+        run: |
+          python -m py_compile calc1.py
+          echo "10" > input.txt
+          echo "20" >> input.txt
+          python calc1.py < input.txt
